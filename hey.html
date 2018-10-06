@@ -1,0 +1,113 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        canvas {
+            border: 1px solid #d3d3d3;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body onload="startGame()">
+    <script>
+        document.onkeydown = checkKey;
+
+        function checkKey(e) {
+
+            e = e || window.event;
+
+            if (e.keyCode == '38') {
+                // up arrow
+                moveup();
+            }
+            else if (e.keyCode == '40') {
+                // down arrow
+                movedown();
+            }
+            else if (e.keyCode == '37') {
+                // left arrow
+                moveleft();
+            }
+            else if (e.keyCode == '39') {
+                // right arrow
+                moveright();
+            }
+
+        }
+
+        var myGamePiece;
+
+        function startGame() {
+            myGamePiece = new component(30, 30, "red", 0, 0);
+            myGameArea.start();
+        }
+
+        var myGameArea = {
+            canvas: document.createElement("canvas"),
+            start: function () {
+                this.canvas.width = 330;
+                this.canvas.height = 600;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval(updateGameArea, 20);
+            },
+            clear: function () {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        }
+
+        function component(width, height, color, x, y) {
+            this.width = width;
+            this.height = height;
+            this.speedX = 0;
+            this.speedY = 0;
+            this.x = x;
+            this.y = y;
+            this.update = function () {
+                ctx = myGameArea.context;
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+            this.newPos = function () {
+                this.x += this.speedX;
+                this.y += this.speedY;
+            }
+        }
+
+        function updateGameArea() {
+            myGameArea.clear();
+            myGamePiece.newPos();
+            myGamePiece.update();
+        }
+
+        function moveup() {
+            if (myGamePiece.y !== 0) {
+                myGamePiece.y -= 30;
+            }
+        }
+
+        function movedown() {
+            if (myGamePiece.y !== 570) {
+                myGamePiece.y += 30;
+            }
+        }
+
+        function moveleft() {
+            if (myGamePiece.x !== 0) {
+                myGamePiece.x -= 30;
+            }
+        }
+
+        function moveright() {
+            if (myGamePiece.x !== 300) {
+                myGamePiece.x += 30;
+            }
+        }
+    </script>
+
+    <p>use the arrow keys to move it</p>
+</body>
+
+</html>
