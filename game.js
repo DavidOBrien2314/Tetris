@@ -5,11 +5,12 @@ function checkKey(e) {
 
     e = e || window.event;
 
-    if (e.keyCode == '38') {
-        // up arrow
-        moveup();
-    }
-    else if (e.keyCode == '40') {
+    // if (e.keyCode == '38') {
+    //     // up arrow
+    //     moveup();
+    // }
+
+    if (e.keyCode == '40') {
         // down arrow
         movedown();
     }
@@ -27,19 +28,19 @@ function checkKey(e) {
 var myGamePiece;
 
 function startGame() {
-    myGamePiece = new component(30, 30, "darkorange", 0, 0);
+    myGamePiece = new component(40, 40, "darkorange", 150, 0);
     myGameArea.start();
 }
 
 var myGameArea = {
     canvas: document.createElement("canvas"),
     start: function () {
-        this.canvas.width = 330;
-        this.canvas.height = 600;
+        this.canvas.width = 400;
+        this.canvas.height = 800;
         this.context = this.canvas.getContext("2d");
         // document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         document.getElementById("playarea").appendChild(this.canvas);
-        this.interval = setInterval(updateGameArea, 20);
+        this.interval = setInterval(updateGameArea, 40);
     },
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -50,7 +51,7 @@ function component(width, height, color, x, y) {
     this.width = width;
     this.height = height;
     this.speedX = 0;
-    this.speedY = 0;
+    this.speedY = 1;
     this.x = x;
     this.y = y;
     this.update = function () {
@@ -60,7 +61,9 @@ function component(width, height, color, x, y) {
     }
     this.newPos = function () {
         this.x += this.speedX;
-        this.y += this.speedY;
+        if (this.y + this.speedY !== 760) {
+            this.y += this.speedY;
+        }
     }
 }
 
@@ -70,27 +73,27 @@ function updateGameArea() {
     myGamePiece.update();
 }
 
-function moveup() {
-    if (myGamePiece.y !== 0) {
-        myGamePiece.y -= 30;
-    }
-}
+// function moveup() {
+//     if (myGamePiece.y !== 0) {
+//         myGamePiece.y -= 30;
+//     }
+// }
 
 function movedown() {
-    if (myGamePiece.y !== 570) {
-        myGamePiece.y += 30;
+    if (myGamePiece.y !== 760) {
+        myGamePiece.y += 40;
     }
 }
 
 function moveleft() {
     if (myGamePiece.x !== 0) {
-        myGamePiece.x -= 30;
+        myGamePiece.x -= 40;
     }
 }
 
 function moveright() {
-    if (myGamePiece.x !== 300) {
-        myGamePiece.x += 30;
+    if (myGamePiece.x !== 360) {
+        myGamePiece.x += 40;
     }
 }
 startGame();
