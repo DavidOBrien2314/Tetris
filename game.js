@@ -28,8 +28,12 @@ function checkKey(e) {
 var myGamePiece;
 
 function startGame() {
-    myGamePiece = new component(40, 40, "darkorange", 150, 0);
+    myGamePiece = new component(40, 40, "darkorange", 200, 0, 1);
     myGameArea.start();
+}
+
+function addNextPiece() {
+    myGamePiece = new component(40, 40, "blue", 200, 0, 1);
 }
 
 var myGameArea = {
@@ -47,13 +51,14 @@ var myGameArea = {
     }
 }
 
-function component(width, height, color, x, y) {
+function component(width, height, color, x, y, state) {
     this.width = width;
     this.height = height;
     this.speedX = 0;
     this.speedY = 1;
     this.x = x;
     this.y = y;
+    this.state = state;
     this.update = function () {
         ctx = myGameArea.context;
         ctx.fillStyle = color;
@@ -80,19 +85,25 @@ function updateGameArea() {
 // }
 
 function movedown() {
-    if (myGamePiece.y !== 760) {
+    if (myGamePiece.y + myGamePiece.height < 760 && myGamePiece.state) {
         myGamePiece.y += 40;
+    }
+    else {
+        myGamePiece.y = 760;
+        myGamePiece.state = 0;
+        myGamePiece.speedY = 0;
+        addNextPiece();
     }
 }
 
 function moveleft() {
-    if (myGamePiece.x !== 0) {
+    if (myGamePiece.x - myGamePiece.width >= 0 && myGamePiece.state) {
         myGamePiece.x -= 40;
     }
 }
 
 function moveright() {
-    if (myGamePiece.x !== 360) {
+    if (myGamePiece.x + myGamePiece.width <= 360 && myGamePiece.state) {
         myGamePiece.x += 40;
     }
 }
